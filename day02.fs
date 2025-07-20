@@ -58,5 +58,5 @@ let rec input_password list button keypad password =
 
 let input = IO.File.ReadAllText("./day02.txt") |> Seq.toList
 
-input_password input keypad_one_pos  keypad_one  [] |> printfn "%s"
+input_password input keypad_one_pos keypad_one [] |> printfn "%s"
 input_password input keypad_two_pos keypad_two [] |> printfn "%s"
