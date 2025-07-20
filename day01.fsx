@@ -11,10 +11,10 @@ let right_of = function
                | South -> West | East -> South
 
 let move_by dir dist = match dir with
-                       | Direction.North -> 0, -dist
-                       | Direction.South -> 0, dist
-                       | Direction.West  -> -dist, 0
-                       | Direction.East  -> dist, 0
+                       | North -> 0, -dist
+                       | South -> 0, dist
+                       | West  -> -dist, 0
+                       | East  -> dist, 0
 
 let addv2 (x1, y1) (x2, y2) = (x1 + x2, y1 + y2)
 
@@ -38,10 +38,7 @@ let input = IO.File.ReadAllText("./day01.txt").Split(", ")
 let ((x, y), _, locations) = input
                              |> Seq.fold
                                 (fun ((x, y), dir, locations) inst -> move (x, y) dir inst locations)
-                                ((0, 0), Direction.North, [])
-
-let print_position pos = let (x, y) = pos
-                         printfn "(%i, %i)" x y
+                                ((0, 0), North, [])
 
 // Part 1
 Math.Abs(x) + Math.Abs(y) |> printfn "%i"
