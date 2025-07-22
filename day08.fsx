@@ -50,10 +50,10 @@ let rec run_operation (list:bool array array) (insts:Instruction list) =
             let new_list =
                 list
                 |> Array.mapi (fun y v ->
-                                   v |> Array.mapi (fun x w -> if col = x then
-                                                                   list.[emod (y - amt) (Array.length list)].[x]
-                                                               else
-                                                                   w))
+                               v |> Array.mapi (fun x w ->
+                                                if col = x then
+                                                    list.[emod (y - amt) (Array.length list)].[x]
+                                                else w))
             run_operation new_list tail
         | _ -> run_operation list tail
     | [] -> list
