@@ -30,28 +30,28 @@ let rec run_operation (list:bool array array) (insts:Instruction list) =
     // i'm so fucking sorry
     | inst::tail ->
         match inst with
-        | Rect (a, b) ->
+        | Rect (w, h) ->
             let new_list =
                 list
-                |> Array.mapi (fun i v ->
-                               if b > i then
-                                   v |> Array.mapi (fun i v -> if a > i then true else v)
+                |> Array.mapi (fun y v ->
+                               if h > y then
+                                   v |> Array.mapi (fun x v -> if w > x then true else v)
                                else v)
             run_operation new_list tail
-        | RotateRow (a, b) ->
+        | RotateRow (row, amt) ->
             let new_list =
                 list
-                |> Array.mapi (fun i v ->
-                               if a = i then
-                                   v |> Array.mapi (fun i _ -> v.[emod (i - b) (Array.length v)])
+                |> Array.mapi (fun y v ->
+                               if row = y then
+                                   v |> Array.mapi (fun x _ -> v.[emod (x - amt) (Array.length v)])
                                else v)
             run_operation new_list tail
-        | RotateColumn (a, b) ->
+        | RotateColumn (col, amt) ->
             let new_list =
                 list
-                |> Array.mapi (fun i v ->
-                                   v |> Array.mapi (fun j w -> if a = j then
-                                                                   list.[emod (i - b) (Array.length list)].[j]
+                |> Array.mapi (fun y v ->
+                                   v |> Array.mapi (fun x w -> if col = x then
+                                                                   list.[emod (y - amt) (Array.length list)].[x]
                                                                else
                                                                    w))
             run_operation new_list tail
