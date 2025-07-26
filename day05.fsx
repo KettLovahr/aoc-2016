@@ -6,7 +6,7 @@ let get_hash (str:string) =
     use md5 = MD5.Create()
     Encoding.UTF8.GetBytes(str)
     |> md5.ComputeHash
-    |> Seq.map (fun b -> System.String.Format("{0:X2}", b))
+    |> Seq.map (fun b -> System.String.Format("{0:x2}", b))
     |> String.concat ""
 
 
@@ -35,12 +35,12 @@ let rec find_password_loc key num (pass:string) =
         | true -> let pos = h.[5] |> string |> Int32.Parse
                   if pass.[pos] = ' ' then
                       let new_pass = String.concat "" [pass.Substring(0, pos); string h.[6]; pass.Substring(pos + 1)]
-                      printfn "%s" new_pass
+                      printf "%s\r" new_pass
                       find_password_loc key (num+1) new_pass
                   else
                       find_password_loc key (num+1) pass
         | false -> find_password_loc key (num+1) pass
-    
+
 
 // these are dog slow and i'd like to believe it's because of the hashing
 // let's try multithreading this at some point, i guess
