@@ -52,9 +52,7 @@ let supports_ssl (str:string) =
     |> Seq.exists (fun x -> x)
 
 let solve list f =
-    list |> Seq.toList
-         |> Seq.map (fun s -> if f s then 1 else 0)
-         |> Seq.sum
+    Seq.sum [ for i in list -> if f i then 1 else 0 ]
 
 let input = IO.File.ReadAllLines("./day07.txt")
 
