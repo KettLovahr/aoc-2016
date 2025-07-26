@@ -15,10 +15,9 @@ let get_checksum (str:string) =
     break_down (str |> Seq.toList) Map.empty
     |> Seq.sortWith (fun a b -> int a.Key - int b.Key) // Sort alphabetically
     |> Seq.sortWith (fun a b -> b.Value - a.Value)     // Sort by ocurrences
-    |> Seq.map (fun a -> a.Key)
-    |> Seq.filter (fun a -> a >= 'a' && a <= 'z')
+    |> Seq.filter (fun a -> a.Key >= 'a' && a.Key <= 'z')
     |> Seq.take 5
-    |> Seq.map (fun a -> string a)
+    |> Seq.map (fun a -> string a.Key)
     |> String.concat ""
 
 let get_number(str:string) =
@@ -35,18 +34,14 @@ let rotate (c:char) (amt:int) =
     | _ -> c
 
 let decrypt (str:string) (amt:int) =
-    str |> Seq.toList
-        |> Seq.map (fun a -> (rotate a amt) |> string)
-        |> String.concat ""
+    String.concat "" [ for c in str -> rotate c amt |> string ]
 
 let section_split (str:string) =
     let split = str.Split("[")
     get_checksum split.[0], split.[1].[0..4], get_number str, str
 
 let count list =
-    list |> Seq.map section_split
-         |> Seq.map (fun (a, b, c, _) -> if a = b then c else 0)
-         |> Seq.sum
+    List.sum [ for (a,b,c,_) in list |> Seq.map section_split -> if a = b then c else 0 ]
 
 let get_text list =
     list |> Seq.map section_split
