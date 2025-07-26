@@ -27,11 +27,11 @@ let move pos dir (inst:string) locations =
      let new_locations = [1..steps] |> List.map (fun x -> addv2 pos (move_by new_dir x))
      (List.last new_locations), new_dir, (List.append locations new_locations)
 
-let rec find_first_repeat list history =
+let rec find_first_repeat list =
     match list with
     | [] -> failwith "didn't find a repeat"
-    | first::rest -> if List.contains first history then first
-                     else find_first_repeat rest (List.append history [first])
+    | first::rest -> if List.contains first rest then first
+                     else find_first_repeat rest
 
 let input = IO.File.ReadAllText("./day01.txt").Split(", ")
 
@@ -43,4 +43,4 @@ let ((x, y), _, locations) = input
 // Part 1
 Math.Abs(x) + Math.Abs(y) |> printfn "%i"
 // Part 2
-find_first_repeat locations [] |> (fun (x, y) -> printfn "%i" (Math.Abs(x) + Math.Abs(y)))
+find_first_repeat locations |> (fun (x, y) -> printfn "%i" (Math.Abs(x) + Math.Abs(y)))
