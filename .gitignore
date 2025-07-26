@@ -1,1 +1,6 @@
-*/input
+*.txt
+*.exe
+*.dll
+*.optdata
+*.sigdata
+
