@@ -1,23 +1,13 @@
 open System
 
-let rec break_down list map =
-    match list with
-    | [] -> map
-    | head::rest ->
-        if Map.containsKey head map then
-            let new_map = map.Add (head, map.[head] + 1)
-            break_down rest new_map
-        else
-            let new_map = map.Add (head, 1)
-            break_down rest new_map
-
 let get_checksum (str:string) = 
-    break_down (str |> Seq.toList) Map.empty
-    |> Seq.sortWith (fun a b -> int a.Key - int b.Key) // Sort alphabetically
-    |> Seq.sortWith (fun a b -> b.Value - a.Value)     // Sort by ocurrences
-    |> Seq.filter (fun a -> a.Key >= 'a' && a.Key <= 'z')
+    str
+    |> Seq.countBy id
+    |> Seq.sortBy (fun (k, _) -> int k)       // Sort alphabetically
+    |> Seq.sortByDescending (fun (_, v) -> v) // Sort by ocurrences
+    |> Seq.filter (fun (k,_) -> k >= 'a' && k <= 'z')
     |> Seq.take 5
-    |> Seq.map (fun a -> string a.Key)
+    |> Seq.map (fun (k,_) -> string k)
     |> String.concat ""
 
 let get_number(str:string) =

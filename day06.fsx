@@ -6,23 +6,17 @@ let rec transpose list =
         List.map List.head list :: transpose (List.map List.tail list)
     | _ -> []
 
-let rec break_down (map:Map<char,int>) list = 
-    match list with
-    | [] -> map
-            |> Seq.sortWith (fun a b -> b.Value - a.Value) 
-            |> Seq.map (fun a -> a.Key)
-    | head::tail -> if Map.containsKey head map then
-                        let new_map = map.Add (head, map.[head] + 1)
-                        break_down new_map tail
-                    else
-                        let new_map = map.Add (head, 1)
-                        break_down new_map tail
+let break_down list = 
+    list
+    |> Seq.countBy id
+    |> Seq.sortBy (fun (_ ,v) -> v)
+    |> Seq.map (fun (k, _) -> k)
 
 let rec get_most_common list =
-    list |> break_down Map.empty |> Seq.head |> string
+    list |> break_down |> Seq.head |> string
 
 let rec get_least_common list =
-    list |> break_down Map.empty |> Seq.rev |> Seq.head |> string
+    list |> break_down |> Seq.rev |> Seq.head |> string
 
 let rec solve arr f = 
     arr
